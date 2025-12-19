@@ -5,3 +5,4 @@ __pycache__
 gemini.md
 *.code-workspace
 TODO.md
+*.log
