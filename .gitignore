@@ -1,0 +1,7 @@
+.venv/
+code_snips/
+__pycache__
+.env
+gemini.md
+*.code-workspace
+TODO.md
