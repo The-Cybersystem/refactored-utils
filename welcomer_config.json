@@ -1,0 +1,15 @@
+{
+  "1440396145393143844": { // WL FD
+    "welcome": { // Module
+      "enabled": true, // Deployment status
+      "channel_id": 1440396147754532979, // Channel to post welcome message
+      "message": "Welcome {user} to Pennsylvania State Roleplay's Fire and EMS server! Please read the rules and enjoy your stay.", // f-string message
+      "embed": { // Embed
+        "title": "Welcome to PSRP WL FD/EMS!", // Title
+        "description": "We're glad to have you here. Check out our channels and get started!", // Contents
+        "color": 6251439, // Brand color
+        "thumbnail": "https://cdn.discordapp.com/attachments/991748933766352926/1440806293878345941/image0.gif?ex=691f7eed&is=691e2d6d&hm=077d412efc3fde61df557662fcabdc9a19dd2459ab133a4d2232bddad2355423&"
+      } // Cute Husky welcome GIF
+    }
+  }
+}
