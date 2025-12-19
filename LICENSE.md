@@ -1,0 +1,1 @@
+(Refactored Utils)[https://github.com/The-Cybersystem/refactored-utils] © 2025 by (The-Cybersystem)[https://github.com/The-Cybersystem] is licensed under (CC BY-NC-SA 4.0)[https://creativecommons.org/licenses/by-nc-sa/4.0/]
