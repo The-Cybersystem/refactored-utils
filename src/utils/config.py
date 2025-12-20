@@ -60,14 +60,13 @@ class CommandConfigRepository:
     def __init__(self, config_path: Path, backup_dir: Path):
         self.config_path = config_path
         self.backup_dir = backup_dir
-        self.__logger: logging.Logger = logging.getLogger(__name__)
         self._ensure_config_exists()
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
     def _ensure_config_exists(self):
         """Ensures the configuration file exists, creating it if necessary."""
         if not self.config_path.exists():
-            self.__logger.info(
+            logging.info(
                 f"Creating new command configuration file at {self.config_path}"
             )
             self._write_config({"guilds": {}})
@@ -78,7 +77,7 @@ class CommandConfigRepository:
             with self.config_path.open("r") as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError, TypeError) as e:
-            self.__logger.error(f"Error reading command configuration: {e}")
+            logging.error(f"Error reading command configuration: {e}")
             raise ConfigurationError(
                 f"Failed to read or parse {self.config_path}"
             ) from e
@@ -89,7 +88,7 @@ class CommandConfigRepository:
             with self.config_path.open("w") as f:
                 json.dump(data, f, indent=2)
         except (IOError, TypeError) as e:
-            self.__logger.error(f"Error writing command configuration: {e}")
+            logging.error(f"Error writing command configuration: {e}")
             raise ConfigurationError(f"Failed to write to {self.config_path}") from e
 
     def get_all(self) -> Dict[str, Any]:
@@ -113,7 +112,7 @@ class CommandConfigRepository:
             config["guilds"] = {}
         config["guilds"][guild_id] = commands
         self._write_config(config)
-        self.__logger.info(f"Updated command configuration for guild {guild_id}.")
+        logging.info(f"Updated command configuration for guild {guild_id}.")
 
     def backup(self):
         """Creates a timestamped backup of the current command configuration."""
@@ -126,9 +125,9 @@ class CommandConfigRepository:
 
             with backup_file.open("w") as f:
                 json.dump(config, f, indent=2)
-            self.__logger.info(f"Created configuration backup at {backup_file}")
+            logging.info(f"Created configuration backup at {backup_file}")
         except Exception as e:
-            self.__logger.error(f"Error creating config backup: {e}")
+            logging.error(f"Error creating config backup: {e}")
             # Do not re-raise; a backup failure shouldn't halt the main operation.
 
     def restore(self, backup_path: Path) -> bool:
@@ -146,10 +145,10 @@ class CommandConfigRepository:
                 )
 
             self._write_config(config)
-            self.__logger.info(f"Restored configuration from {backup_path}")
+            logging.info(f"Restored configuration from {backup_path}")
             return True
         except (json.JSONDecodeError, ConfigurationError, IOError) as e:
-            self.__logger.error(f"Error restoring config backup: {e}")
+            logging.error(f"Error restoring config backup: {e}")
             return False
 
 
@@ -184,26 +183,29 @@ class ConfigManager:
     """
 
     def __init__(self):
-        # Setup Logging
-        self.__logger = logging.getLogger(__name__)
-        self.__logger.info("Initializing configuration manager...")
+        logging.info("Initializing configuration manager...")
+        self._setup_env_vars()
+        self._setup_command_config_repo()
+        self._setup_server_config()
+        logging.info("Configuration manager initialized successfully.")
 
-        # Environment Variables
+    def _setup_env_vars(self):
+        """Loads and validates required environment variables."""
         self.required_env_vars = ["APPROVED_GUILDS", "TOKEN", "DB"]
         load_and_validate_env_vars(self.required_env_vars)
-        self.__logger.info("Environment variables validated.")
+        logging.info("Environment variables validated.")
 
-        # Command Configuration Repository
+    def _setup_command_config_repo(self):
+        """Initializes the command configuration repository."""
         command_config_file = Path("command_config.json")
         backup_dir = Path("backups/")
         self.command_config_repo = CommandConfigRepository(
             command_config_file, backup_dir
         )
 
-        # Server Configuration Path
+    def _setup_server_config(self):
+        """Initializes the server configuration path."""
         self.server_config_file = Path("server_configs.json5")
-
-        self.__logger.info("Configuration manager initialized successfully.")
 
     # --- Environment Variable Access ---
     def get(self, key: str, default: Any = None) -> Any:
@@ -226,3 +228,4 @@ class ConfigManager:
     # --- Server Config Access ---
     def get_server_config(self, guild_id: str) -> Dict[str, Any]:
         return get_server_config(guild_id, self.server_config_file)
+

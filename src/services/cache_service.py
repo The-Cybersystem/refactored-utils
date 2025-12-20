@@ -3,8 +3,6 @@ from datetime import datetime, timedelta
 import logging
 import asyncio
 
-logger = logging.getLogger(__name__)
-
 
 class CacheService:
     """
@@ -16,10 +14,10 @@ class CacheService:
 
     def __init__(self):
         """Initializes the cache service."""
-        logger.info("Initialising cache service...")
+        logging.info("Initialising cache service...")
         self._cache: Dict[str, Any] = {}
         self._lock = asyncio.Lock()
-        logger.info("Cache service initialised successfully.")
+        logging.info("Cache service initialised successfully.")
 
     async def get(self, key: str) -> Optional[Dict[str, Any]]:
         """
