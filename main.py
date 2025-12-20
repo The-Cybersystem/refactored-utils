@@ -1,17 +1,14 @@
-from sys import stdout, exit as sysexit
+from sys import exit as sysexit
 import logging
-from src.utils.config import ConfigManager
+from src.utils.config import ConfigManager, ConfigurationError
+from src.utils.error_handler import configure_logging, handle_exception
 
 
 def main():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        handlers=[logging.FileHandler("main.log"), logging.StreamHandler(stdout)],
-    )
-    try:
-        logger: logging.Logger = logging.getLogger(__name__)
+    configure_logging(log_file="main.log", level=logging.INFO)
+    logger: logging.Logger = logging.getLogger(__name__)
 
+    try:
         logger.info("Loading configuration...")
         config = ConfigManager()
 
@@ -19,12 +16,19 @@ def main():
         token = config.get("TOKEN")
 
         if not token:
-            logger.error("Bot token not found in configuration.")
-            sysexit(1)
+            handle_exception(
+                logger,
+                ConfigurationError("Bot token not found in configuration."),
+                "Configuration error",
+                reraise=True
+            )
 
         logger.info("Configuration loaded successfully.")
+    except ConfigurationError as e:
+        handle_exception(logger, e, "Configuration error", reraise=False)
+        sysexit(1)
     except Exception as e:
-        logger.error(f"An error occurred: {e}")
+        handle_exception(logger, e, "An unexpected error occurred", reraise=False)
         sysexit(1)
 
 

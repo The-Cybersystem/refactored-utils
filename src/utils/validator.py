@@ -1,17 +1,11 @@
 from typing import Any, Dict
 import logging
 import re
-from sys import stdout
 
 
 class Validator:
     def __init__(self):
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s [%(levelname)s] %(message)s",
-            handlers=[logging.FileHandler("main.log"), logging.StreamHandler(stdout)],
-        )
-        self.__logger: logging.Logger = logging.getLogger(__name__)
+        pass
 
     def validate_user_id(self, user_id: Any) -> bool:
         """
@@ -23,7 +17,7 @@ class Validator:
         Returns:
             bool: True if valid, False otherwise.
         """
-        self.__logger.debug(f"Validating user ID: {user_id}")
+        logging.debug(f"Validating user ID: {user_id}")
         return isinstance(user_id, int) and user_id > 0
 
     def validate_string(
@@ -42,7 +36,7 @@ class Validator:
         Returns:
             bool: True if the string is valid, False otherwise.
         """
-        self.__logger.debug(f"Validating string: {value}")
+        logging.debug(f"Validating string: {value}")
         if not isinstance(value, str):
             return False
 
@@ -65,7 +59,7 @@ class Validator:
         Returns:
             bool: True if the value is a number within range, False otherwise.
         """
-        self.__logger.debug(f"Validating number: {value}")
+        logging.debug(f"Validating number: {value}")
         try:
             num = float(value)
             return min_value <= num <= max_value
@@ -86,7 +80,7 @@ class Validator:
         Returns:
             Dict[str, Any]: A new dictionary with sanitized values.
         """
-        self.__logger.debug(f"Sanitizing input: {data}")
+        logging.debug(f"Sanitizing input: {data}")
         sanitized = {}
         for key, value in data.items():
             if value is None or isinstance(value, (int, float)):
