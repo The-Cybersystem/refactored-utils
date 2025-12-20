@@ -3,6 +3,7 @@ import discord
 import logging
 from sys import stdout
 from src.utils.validator import Validator
+from src.services.security_service import SecurityService
 
 
 class Container:
@@ -19,7 +20,7 @@ class Container:
 
         # Initialise core services
         self._validator = Validator()
-        # self._security_service = SecurityService()
+        self._security_service = SecurityService()
         # self._cache_service = CacheService()
 
         # Initialise database layer
