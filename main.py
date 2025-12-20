@@ -1,6 +1,6 @@
 from sys import stdout, exit as sysexit
 import logging
-from utils.config import ConfigManager
+from src.utils.config import ConfigManager
 
 
 def main():
