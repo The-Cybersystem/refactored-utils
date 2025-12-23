@@ -205,7 +205,7 @@ class ConfigManager:
 
     def _setup_server_config(self):
         """Initializes the server configuration path."""
-        self.server_config_file = Path("server_configs.json5")
+        self.server_config_file = Path("welcomer_config.json5")
 
     # --- Environment Variable Access ---
     def get(self, key: str, default: Any = None) -> Any:

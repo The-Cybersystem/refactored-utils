@@ -5,7 +5,7 @@ module.exports = {
          interpreter: '',  // Full path to your custom Python interpreter
          cwd: '',  // Absolute path to the bot's working directory
          env: {
-           NODE_ENV: 'development'  // Add any env vars your bot needs, like Discord token
+           NODE_ENV: 'development'
          },
          instances: 1,  // Run one instance (bots usually don't need clustering)
          autorestart: true,  // Auto-restart on crashes
