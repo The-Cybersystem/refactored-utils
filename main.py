@@ -1,34 +1,56 @@
 from sys import exit as sysexit
-import logging
 from src.utils.config import ConfigManager, ConfigurationError
-from src.utils.error_handler import configure_logging, handle_exception
+from src.utils.error_handler import handle_exception
+from src.utils.logger import setup_async_logger, setup_sync_logger
+
+from src.core.application import Application
+from src.core.container import Container
 
 
 def main():
-    configure_logging(log_file="main.log", level=logging.INFO)
-    logger: logging.Logger = logging.getLogger(__name__)
+    sync_logger = setup_sync_logger()  # Synchronous logger for main.py
 
     try:
-        logger.info("Loading configuration...")
+        sync_logger.info("Loading configuration...")
         config = ConfigManager()
 
-        logger.debug("Retrieving bot token...")
+        sync_logger.debug("Retrieving bot token...")
         token = config.get("TOKEN")
 
         if not token:
             handle_exception(
-                logger,
+                sync_logger,  # type: ignore
                 ConfigurationError("Bot token not found in configuration."),
                 "Configuration error",
-                reraise=True
+                reraise=True,
             )
+        sync_logger.info("Configuration loaded successfully.")
 
-        logger.info("Configuration loaded successfully.")
+        sync_logger.debug("Initializing application...")
+        container = Container()
+        async_logger = setup_async_logger()  # Asynchronous logger for the Application
+        app = Application(
+            container.bot, container, async_logger, sync_logger
+        )  # Pass both loggers
+        sync_logger.info("Application initialized successfully.")
+
+        app.run(token)
+
     except ConfigurationError as e:
-        handle_exception(logger, e, "Configuration error", reraise=False)
+        handle_exception(
+            sync_logger,  # type: ignore
+            e,
+            "Configuration error",
+            reraise=False,
+        )
         sysexit(1)
     except Exception as e:
-        handle_exception(logger, e, "An unexpected error occurred", reraise=False)
+        handle_exception(
+            sync_logger,  # type: ignore
+            e,
+            "An unexpected error occurred",
+            reraise=False,
+        )
         sysexit(1)
 
 
