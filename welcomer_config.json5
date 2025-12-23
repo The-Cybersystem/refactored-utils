@@ -1,0 +1,15 @@
+{
+  "1234567890123456789": { // server id
+    "welcome": { // Module
+      "enabled": false, // Deployment status
+      "channel_id": 1234567890123456789, // Channel to post welcome message
+      "message": "Welcome {user} to server_name server! Please read the rules and enjoy your stay.", // f-string message
+      "embed": { // Embed
+        "title": "Welcome to server", // Title
+        "description": "We're glad to have you here. Check out our channels and get started!", // Contents
+        "color": 6251439, // Brand color
+        "thumbnail": ""
+      } // Cute Husky welcome GIF
+    }
+  }
+}
