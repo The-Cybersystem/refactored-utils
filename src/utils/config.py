@@ -45,7 +45,7 @@ def get_env_var_as_list(key: str, default: List[str] | None = None) -> List[str]
     value = get_env_var(key)
     if value is None:
         return default if default is not None else []
-    return [item.strip() for item in value.split(",") if item.strip()]
+    return [item.strip().strip('"') for item in value.split(",") if item.strip()]
 
 
 # --- JSON File Repository for Command Configuration ---

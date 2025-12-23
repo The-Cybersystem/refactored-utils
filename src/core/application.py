@@ -147,7 +147,7 @@ class Application:
         """Leaves any guilds that are not in the approved list."""
         approved_guilds = self.config_manager.get_approved_guilds()
         for guild in self.bot.guilds:
-            if str(guild.id) not in approved_guilds:
+            if guild.id not in approved_guilds:
                 await self.async_logger.warning(
                     f"Leaving unapproved guild: {guild.name}"
                 )
