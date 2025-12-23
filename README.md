@@ -47,11 +47,11 @@ The bot is configured through a combination of a `.env` file for secrets and JSO
     Open the `.env` file and add the following required variables.
 
     ```env
-    # Your Discord Bot's authentication token
+    # Your Discord Bot's authentication token ([discord.dev](https://discord.com/developers/applications))
     TOKEN="YOUR_DISCORD_BOT_TOKEN"
 
     # The connection string for your MongoDB database
-    DB="mongodb://localhost:27017/your_db_name"
+    DB="mongodb://localhost:27017/your_db_name" # local, see [MongoDB](https://www.mongodb.com/try/download/community)
 
     # A comma-separated list of Guild (Server) IDs where the bot is approved to run
     APPROVED_GUILDS="GUILD_ID_1,GUILD_ID_2"
@@ -59,8 +59,8 @@ The bot is configured through a combination of a `.env` file for secrets and JSO
 
 3.  **Review other configuration files:**
 
-    -   `welcomer_config.json5`: Contains settings for the "welcomer" cog, such as welcome messages or channels. You can modify this file to change the behavior of the welcome feature on a per-guild basis.
-    -   `command_config.json`: Used to manage which commands are enabled or disabled for specific guilds. This is managed dynamically by the bot but can be pre-configured.
+    -   `welcomer_config.json5`: Contains settings for your "welcomer" cog, if needed, such as welcome messages or channels. You can modify this file to change the behavior of your welcome feature on a per-guild basis.
+    -   `command_config.json`: Used to manage which commands are enabled or disabled for specific guilds. This is managed dynamically by the bot but should be pre-configured.
 
 ## Usage
 
